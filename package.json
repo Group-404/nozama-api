@@ -23,8 +23,7 @@
     "pg-hstore": "^2.3.2",
     "sequelize": "^3.6.0",
     "sequelize-cli": "^1.7.4",
-    "serve-favicon": "~2.3.0",
-    "serve-static": "^1.10.0"
+    "serve-favicon": "~2.3.0"
   },
   "devDependencies": {
     "errorhandler": "^1.4.2"
