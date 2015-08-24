@@ -24,7 +24,7 @@ module.exports = function(sequelize, Datatypes){
       unique: false
     }
   }, {
-      timestamps: true
+    timestamps: true
 
       // classMethods: {
       //   associate: function(models){

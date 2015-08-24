@@ -3,15 +3,17 @@
 var Sequelize = require('sequelize');
 
 var sequelize = new Sequelize('nozama_app', 'group404', 'abc', {
- host: "localhost",
- port: 5432,
- dialect: 'postgres'
+  host: "localhost",
+  port: 5432,
+  dialect: 'postgres'
 });
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/nozama_mongo');
 
 var models = {};
+
+models.sequelize = sequelize;
 models.User = sequelize.import('./user');
 models.Profile = sequelize.import('./profile');
 // models.Cart = require('./cart')(mongoose);
@@ -28,6 +30,7 @@ models.Profile = sequelize.import('./profile');
 // });
 models.User.hasOne(models.Profile);
 models.Profile.belongsTo(models.User);
-sequelize.sync();
+
+// sequelize.sync();
 
 module.exports = models;
