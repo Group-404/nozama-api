@@ -5,10 +5,10 @@ var router = express.Router();
 router.route('/')
  /* GET users listing. */
   .get(function(req, res, next) {
-    res.send('respond with a resource');
+    res.send('Here are the profiles');
   })
   .post(function(req, res){
-    res.send("We created a User...maybe");
+    res.send("We created a profile!");
     // models.user.js.create(req.body).then(function(user){
     //  res.json(cat);
    //   function(err) {
