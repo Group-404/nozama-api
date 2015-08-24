@@ -3,14 +3,14 @@ module.exports = function(sequelize, Datatypes){
   var User = sequelize.define('User', {
     // This is where we're defining the columns. Id is an integer, auto-increments, is the primary key, and must exist.
     id: {
-      type: DataTypes.INTEGER,
+      type: Datatypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
       allowNull: false
     },
 
     email: {
-      type: DataTypes.STRING,
+      type: Datatypes.STRING,
       allowNull: false,
       unique: true,
       validates: {
@@ -19,17 +19,19 @@ module.exports = function(sequelize, Datatypes){
     },
 
     password: {
-      type: DataTypes.STRING,
+      type: Datatypes.STRING,
       allowNull: false,
       unique: false
     }
   }, {
-      timestamps: true,
+      timestamps: true
+
       // classMethods: {
       //   associate: function(models){
       //     User.hasOne(models.Profile);
       //   }
       // }
   });
+
   return User;
 };
