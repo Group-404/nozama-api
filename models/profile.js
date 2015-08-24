@@ -1,8 +1,7 @@
-
 module.exports = function(sequelize, Datatypes){
-  // Instead of mongoose.schema, we use sequelize.define.
+
   var Profile = sequelize.define('Profile', {
-    // This is where we're defining the columns. Id is an integer, auto-increments, is the primary key, and must exist.
+
     id: {
       type: Datatypes.INTEGER,
       autoIncrement: true,
