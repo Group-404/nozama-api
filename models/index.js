@@ -15,9 +15,9 @@ var models = {};
 models.User = sequelize.import('./user');
 models.Profile = sequelize.import('./profile');
 // models.Cart = require('./cart')(mongoose);
-models.Order = sequelize.import('./order');
+// models.Order = sequelize.import('./order');
 // models.Product = sequelize.import('./product')(mongoose);
-models.LineItem = sequelize.import('./lineitem');
+// models.LineItem = sequelize.import('./lineitem');
 
 
 
