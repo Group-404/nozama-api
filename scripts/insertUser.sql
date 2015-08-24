@@ -6,4 +6,4 @@ INSERT INTO "Profiles"("lastName", "firstName", "addressOne", "addressTwo", city
   FROM "Users"
   WHERE email = 'klk@klk.com';
 
-// select * from "Users" u inner join "Profiles" p on u.id=p."UserId";
+-- select * from "Users" u inner join "Profiles" p on u.id=p."UserId";
