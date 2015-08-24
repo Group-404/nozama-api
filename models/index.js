@@ -18,7 +18,7 @@ models.User = sequelize.import('./user');
 models.Profile = sequelize.import('./profile');
 // models.Cart = require('./cart')(mongoose);
 models.Order = sequelize.import('./order');
-// models.Product = sequelize.import('./product');
+models.Product = sequelize.import('./product');
 models.LineItem = sequelize.import('./lineitem');
 
 
@@ -38,8 +38,8 @@ models.User.hasMany(models.Order);
 models.LineItem.belongsTo(models.Order);
 models.Order.hasMany(models.LineItem);
 
-// models.LineItem.belongsTo(models.Product);
-// models.Product.hasMany(models.LineItem);
+models.LineItem.belongsTo(models.Product);
+models.Product.hasMany(models.LineItem);
 
 // sequelize.sync();
 
