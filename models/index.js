@@ -17,7 +17,7 @@ models.sequelize = sequelize;
 models.User = sequelize.import('./user');
 models.Profile = sequelize.import('./profile');
 // models.Cart = require('./cart')(mongoose);
-// models.Order = sequelize.import('./order');
+models.Order = sequelize.import('./order');
 // models.Product = sequelize.import('./product')(mongoose);
 // models.LineItem = sequelize.import('./lineitem');
 
@@ -28,8 +28,12 @@ models.Profile = sequelize.import('./profile');
 //    models[modelName].associate(models);
 //  }
 // });
+
 models.User.hasOne(models.Profile);
 models.Profile.belongsTo(models.User);
+
+models.Order.belongsTo(models.User);
+models.User.hasMany(models.Order)
 
 // sequelize.sync();
 
