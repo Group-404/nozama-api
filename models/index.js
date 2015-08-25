@@ -22,7 +22,7 @@ models.Product = sequelize.import('./product');
 models.LineItem = sequelize.import('./lineitem');
 
 
-
+// kept in case we want to use associate method to connect tables
 // Object.keys(models).forEach(function(modelName) {
 //  if ("associate" in models[modelName]) {
 //    models[modelName].associate(models);
@@ -41,6 +41,5 @@ models.Order.hasMany(models.LineItem);
 models.LineItem.belongsTo(models.Product);
 models.Product.hasMany(models.LineItem);
 
-// sequelize.sync();
 
 module.exports = models;

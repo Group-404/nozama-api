@@ -6,8 +6,11 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
-// var users = require('./routes/users');
+// should this be profile singular?
 var profiles = require('./routes/profiles');
+// var orders = require('./routes/orders');
+// var products = require('./routes/products');
+// need to add authentication routes here?
 
 var app = express();
 
@@ -24,8 +27,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-// app.use('/users', users);
-// app.use('/users/:id/profile', profiles);
+// app.use('/profiles', profiles);
+// app.use('/orders', orders);
+// app.use('/products', products);
+// need to add authentication routes here?
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
