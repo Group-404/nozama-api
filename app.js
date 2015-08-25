@@ -14,7 +14,7 @@ var passport = require('./lib/passport');
 var routes = require('./routes/index');
 // should this be profile singular?
 var profiles = require('./routes/profiles');
-var auth = require('./routes/auth')
+// var auth = require('./routes/auth')
 
 // var orders = require('./routes/orders');
 // var products = require('./routes/products');
@@ -66,7 +66,7 @@ app.use(passport.session());
 
 app.use('/', routes);
 app.use('/profiles', profiles);
-app.use('/auth', auth);
+// app.use('/auth', auth);
 // app.use('/orders', orders);
 // need to add authentication routes here?
 
