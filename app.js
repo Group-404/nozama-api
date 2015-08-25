@@ -43,6 +43,7 @@ app.use('/', routes);
 // should try to modularize all stripe functionality
 // Get the credit card details submitted by the form
 var stripeToken = request.body.stripeToken;
+// need to pull amount from backend, not frontend
 var amount = request.body.amount;
 var description = request.body.description;
 
@@ -53,7 +54,9 @@ var charge = stripe.charges.create({
   description: description
 }, function(err, charge) {
   if (err && err.type === 'StripeCardError') {
-    // The card has been declined
+    console.log("The card has been declined");
+  } else {
+    console.log("Payment successful");
   }
 });
 
