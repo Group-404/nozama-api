@@ -10,14 +10,21 @@ router.route('/')
     res.sendStatus(405);
   })
 
-  // Create lineItems using product id, quantity from CART
-  .post(function(req, res){
-    // res.send("We created lineItems");
-    models.LineItem.create(req.body).then(function(lineItem){
-        res.json(lineItem);
+  // Create lineItems using array of objects {product id, quantity} from CART
+  // send req.body as JSON array
+  .post(function(req, res, next){
+    console.log(req.body);
+    models.LineItem.bulkCreate(req.body).then(function(lineItems){
+        res.json(lineItems);
       }, function(err){
-        console.log(err);
+        next(err);
     });
+    // models.LineItem.create(req.body).then(function(lineItem){
+    //   res.json(lineItem);
+    //   }, function(err){
+    //     next(err);
+    // });
+
   });
 
 
