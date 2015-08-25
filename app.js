@@ -5,6 +5,11 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cors = require('cors');
+var session = require('express-session');
+var uuid = require('uuid');
+var MongoStore = require('connect-mongo')(session);
+process.env.SESSION_SECRET || require('dotenv').load();
+var passport = require('./lib/passport');
 
 var routes = require('./routes/index');
 // should this be profile singular?
@@ -27,6 +32,23 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
+
+app.use(session({
+  secret : process.env.SESSION_SECRET,
+  resave : false,
+  saveUninitialized : false, // don't create a session until something is stored
+  store : new MongoStore({
+    url : "mongodb://localhost/nozama/sessions" // will we move this off localhost later?
+  }),
+  cookie : {
+    req.session.cookie.expires = false; // cookie is currently set to not expire
+  },
+  genid : function(req) { // generates a new session id
+    return uuid.v4({
+      rng : uuid.nodeRNG
+    });
+  }
+}));
 
 app.use('/', routes);
 // app.use('/profiles', profiles);
