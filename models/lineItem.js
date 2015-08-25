@@ -1,11 +1,16 @@
 module.exports = function(sequelize, Datatypes){
 
-  var Order = sequelize.define('Order', {
+  var LineItem = sequelize.define('LineItem', {
 
     id: {
       type: Datatypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
+      allowNull: false
+    },
+
+    quantity: {
+      type: Datatypes.INTEGER,
       allowNull: false
     }
 
@@ -14,5 +19,5 @@ module.exports = function(sequelize, Datatypes){
 
   });
 
-  return Order;
+  return LineItem;
 };
