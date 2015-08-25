@@ -9,6 +9,11 @@ module.exports = function(sequelize, Datatypes){
       allowNull: false
     },
 
+    category: {
+      type: Datatypes.STRING,
+      allowNull: false,
+    },
+
     name: {
       type: Datatypes.STRING,
       allowNull: false
