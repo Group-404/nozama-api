@@ -41,7 +41,8 @@ app.use(session({
     url : "mongodb://localhost/nozama/sessions" // will we move this off localhost later?
   }),
   cookie : {
-    req.session.cookie.expires = false; // cookie is currently set to not expire
+    maxAge : 300000 // 5 minutes
+    // req.session.cookie.expires = false; // cookie is currently set to not expire
   },
   genid : function(req) { // generates a new session id
     return uuid.v4({
@@ -49,6 +50,10 @@ app.use(session({
     });
   }
 }));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 app.use('/', routes);
 // app.use('/profiles', profiles);
