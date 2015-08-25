@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
+var bodyParser = require('body-parser');
 var async = require('async');
 var bcrypt = require('bcrypt');
 var models = require('../models/index');
@@ -54,10 +55,20 @@ router.route('/login').
   get(function(req, res, next) {
     res.sendStatus(405);
   }).
-  post(passport.authenticate('local', {
-    successRedirect : '/',
-    failureRedirect : '/fail' // it'll say 'Nobody' instead of your username
-  }));
+//  post(function(req, res, next) {
+//   passport.authenticate('local', function(err, user, info) {
+//     if (err) { return next(err); }
+//     if (!user) { return res.redirect('/login'); }
+//     req.logIn(user, function(err) {
+//       if (err) { return next(err); }
+//       // return res.redirect('/users/' + user.username);
+//       return res.send(user);
+//     });
+//   })(req, res, next);
+// });
+  post(passport.authenticate('local'), function(req, res){
+    res.json(req.user);
+  });
 
 router.route('/fail').
   all(function(req, res, next) {
@@ -71,6 +82,9 @@ router.route('/changePassword').
     res.sendStatus(405);
   }).
   put(function(req, res, next) {
+    console.log(req.body);
+    console.log(req.user);
+    console.log(req.body.password);
     if(!req.body || !req.user || !req.body.password) {
       var err = new Error("No credentials.");
       return next(err);
