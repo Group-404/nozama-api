@@ -13,7 +13,7 @@ router.get('/', function(req, res, next) {
 
 ////////// AUTH ROUTES //////////
 
-// Sign up
+// SIGN UP
 router.route('/signup').
   get(function(req, res, next) {
     res.sendStatus(405);
@@ -49,65 +49,69 @@ router.route('/signup').
     });
   });
 
-// Log in
-  // this is the only route where Local Strategy will be invoked (by using .authenticate)
-
+// LOG IN
 router.route('/login').
   get(function(req, res, next) {
     res.sendStatus(405);
   }).
   post(passport.authenticate('local', {
     successRedirect : '/',
-    failureRedirect : '/' // it'll say 'Nobody' instead of your username
+    failureRedirect : '/fail' // it'll say 'Nobody' instead of your username
   }));
 
-
-// Change password (maybe this should go into profiles.js?
-// router.route('/changePassword').
-//   get(function(req, res, next) {
-//     res.sendStatus(405);
-//   }).
-//   put(function(req, res, next) {
-//     if(!req.body || !req.user || !req.body.password) {
-//       var err = new Error("No credentials.");
-//       return next(err);
-//     }
-
-//     async.waterfall([
-//       function(cb) {
-//         bcrypt.genSalt(16, cb);
-//       },
-//       function(salt, cb) {
-//         bcrypt.hash(req.body.password, salt, cb);
-//       },
-//       function(hash, cb) {
-//         req.user.update({
-//           password : hash
-//         }).then(function(user) {
-//           cb(null, user);
-//         }).catch(cb);
-//       }
-//     ], function(err, result) {
-//       if(err) {
-//         // students will make error handler
-//         return next(err);
-//       }
-
-//       res.sendStatus(201);
-//     });
+router.route('/fail').
+  all(function(req, res, next) {
+    res.send('No such luck');
+  })
 
 
-//   });
+// CHANGE PASSWORD (maybe this should go into profiles.js?
+router.route('/changePassword').
+  get(function(req, res, next) {
+    res.sendStatus(405);
+  }).
+  put(function(req, res, next) {
+    if(!req.body || !req.user || !req.body.password) {
+      var err = new Error("No credentials.");
+      return next(err);
+    }
 
-// router.route('/logout').
-//   all(function(req, res, next) {
-//     if (!req.user) {
-//       var err = new Error("Log in first.");
-//       return next(err);
-//     }
-//     req.logout();
-//     res.sendStatus(200);
-//   });
+    async.waterfall([
+      function(cb) {
+        bcrypt.genSalt(16, cb);
+      },
+      function(salt, cb) {
+        bcrypt.hash(req.body.password, salt, cb);
+        debugger;
+      },
+      function(hash, cb) {
+        req.user.update({
+          password : hash
+        }).then(function(user) {
+          cb(null, user);
+        }).catch(cb);
+      }
+    ], function(err, result) {
+      if(err) {
+        // students will make error handler
+        return next(err);
+      }
+
+      res.sendStatus(201);
+    });
+
+
+  });
+
+router.route('/logout').
+  all(function(req, res, next) {
+    if (!req.user) {
+      var err = new Error("Log in first.");
+      return next(err);
+    }
+    req.logout();
+    res.sendStatus(200);
+  });
 
 
 module.exports = router;
