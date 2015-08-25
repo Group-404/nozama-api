@@ -16,7 +16,7 @@ var routes = require('./routes/index');
 var profiles = require('./routes/profiles');
 // var orders = require('./routes/orders');
 // var products = require('./routes/products');
-var checkout = require('./routes/checkout');
+var payment = require('./routes/payment');
 // need to add authentication routes here?
 
 var app = express();
@@ -38,7 +38,7 @@ app.use('/', routes);
 app.use('/profiles', profiles);
 // app.use('/orders', orders);
 // app.use('/products', products);
-app.use('/checkout', checkout);
+app.use('/payment', payment);
 // need to add authentication routes here?
 
 ////////STRIPE//////////
