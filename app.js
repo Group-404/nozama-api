@@ -16,6 +16,7 @@ var routes = require('./routes/index');
 var profiles = require('./routes/profiles');
 // var orders = require('./routes/orders');
 // var products = require('./routes/products');
+var checkout = require('./routes/checkout');
 // need to add authentication routes here?
 
 var app = express();
@@ -34,31 +35,32 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 
 app.use('/', routes);
-// app.use('/profiles', profiles);
+app.use('/profiles', profiles);
 // app.use('/orders', orders);
 // app.use('/products', products);
+app.use('/checkout', checkout);
 // need to add authentication routes here?
 
 ////////STRIPE//////////
 // should try to modularize all stripe functionality
 // Get the credit card details submitted by the form
-var stripeToken = request.body.stripeToken;
-// need to pull amount from backend, not frontend
-var amount = request.body.amount;
-var description = request.body.description;
+// var stripeToken = request.body.stripeToken;
+// // need to pull amount from backend, not frontend
+// var amount = request.body.amount;
+// var description = request.body.description;
 
-var charge = stripe.charges.create({
-  amount: amount, // amount in cents, again
-  currency: "usd",
-  source: stripeToken,
-  description: description
-}, function(err, charge) {
-  if (err && err.type === 'StripeCardError') {
-    console.log("The card has been declined");
-  } else {
-    console.log("Payment successful");
-  }
-});
+// var charge = stripe.charges.create({
+//   amount: amount, // amount in cents, again
+//   currency: "usd",
+//   source: stripeToken,
+//   description: description
+// }, function(err, charge) {
+//   if (err && err.type === 'StripeCardError') {
+//     console.log("The card has been declined");
+//   } else {
+//     console.log("Payment successful");
+//   }
+// });
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
