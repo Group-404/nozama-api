@@ -1,7 +1,8 @@
 var express = require('express');
 var router = express.Router();
+var models = require('../models/index');
 
-// Should require authentication
+// Should require authentication?
 
 router.route('/')
  // Get method not allowed
@@ -11,13 +12,13 @@ router.route('/')
 
   // Create lineItems using product id, quantity from CART
   .post(function(req, res){
-    res.send("We created lineItems");
-    // models.user.js.create(req.body).then(function(user){
-    //  res.json(cat);
-   //   function(err) {
-   //   console.log(err);
-   // }
- });
+    // res.send("We created lineItems");
+    models.LineItem.create(req.body).then(function(lineItem){
+        res.json(lineItem);
+      }, function(err){
+        console.log(err);
+    });
+  });
 
 
 module.exports = router;
