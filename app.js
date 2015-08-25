@@ -5,6 +5,11 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cors = require('cors');
+require('dotenv').load();
+
+// Set your secret key: remember to change this to your live secret key in production
+// See your keys here https://dashboard.stripe.com/account/apikeys
+var stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 var routes = require('./routes/index');
 // should this be profile singular?
@@ -33,6 +38,24 @@ app.use('/', routes);
 // app.use('/orders', orders);
 // app.use('/products', products);
 // need to add authentication routes here?
+
+////////STRIPE//////////
+// should try to modularize all stripe functionality
+// Get the credit card details submitted by the form
+var stripeToken = request.body.stripeToken;
+var amount = request.body.amount;
+var description = request.body.description;
+
+var charge = stripe.charges.create({
+  amount: amount, // amount in cents, again
+  currency: "usd",
+  source: stripeToken,
+  description: description
+}, function(err, charge) {
+  if (err && err.type === 'StripeCardError') {
+    // The card has been declined
+  }
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
