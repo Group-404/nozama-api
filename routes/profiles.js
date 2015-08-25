@@ -10,6 +10,8 @@ router.route('/')
     res.send('Here are the profiles');
   })
 
+  // res.json(req.user.profile)
+
   // Create profile (not user information like email and password)
   .post(function(req, res){
     res.send("We created a profile!");

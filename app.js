@@ -14,6 +14,8 @@ var passport = require('./lib/passport');
 var routes = require('./routes/index');
 // should this be profile singular?
 var profiles = require('./routes/profiles');
+var auth = require('./routes/auth')
+
 // var orders = require('./routes/orders');
 // var products = require('./routes/products');
 // need to add authentication routes here?
@@ -36,6 +38,7 @@ app.use(cors());
 app.use(session({
   secret : process.env.SESSION_SECRET,
   resave : false,
+  saveUninitialized : true,
   // saveUninitialized : false, // don't create a session until something is stored
       // commented above out because we prob want sessions without user data
   store : new MongoStore({
@@ -52,14 +55,19 @@ app.use(session({
   }
 }));
 
-app.use(passport.initialize());
-app.use(passport.session());
+// put product routes here
+// app.use('/products', products);
 
+// finds the passport.user attached to the session. if it doesn't find it (aka the user is not yet authenticated), it creates it like req.passport.user = {}
+app.use(passport.initialize());
+// If it finds a serialized user object in the session, it will consider the request authenticated.
+app.use(passport.session());
+// passport. session
 
 app.use('/', routes);
-// app.use('/profiles', profiles);
+app.use('/profiles', profiles);
+app.use('/auth', auth);
 // app.use('/orders', orders);
-// app.use('/products', products);
 // need to add authentication routes here?
 
 // catch 404 and forward to error handler
