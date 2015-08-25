@@ -36,7 +36,8 @@ app.use(cors());
 app.use(session({
   secret : process.env.SESSION_SECRET,
   resave : false,
-  saveUninitialized : false, // don't create a session until something is stored
+  // saveUninitialized : false, // don't create a session until something is stored
+      // commented above out because we prob want sessions without user data
   store : new MongoStore({
     url : "mongodb://localhost/nozama/sessions" // will we move this off localhost later?
   }),
