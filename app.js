@@ -12,13 +12,8 @@ process.env.SESSION_SECRET || require('dotenv').load();
 var passport = require('./lib/passport');
 
 var routes = require('./routes/index');
-// should this be profile singular?
-// var profiles = require('./routes/profiles');
-// var auth = require('./routes/auth')
-
 var orders = require('./routes/orders');
-// var products = require('./routes/products');
-// need to add authentication routes here?
+var products = require('./routes/products');
 
 var app = express();
 
@@ -38,7 +33,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
 
 app.use(session({
   secret : process.env.SESSION_SECRET,
@@ -71,7 +65,9 @@ app.use(passport.session());
 
 
 app.use('/', routes);
-// app.use('/profile', profiles);
+// app.use('/profiles', profiles);
+// app.use('/orders', orders);
+app.use('/products', products);
 app.use('/orders', orders);
 
 // catch 404 and forward to error handler
