@@ -16,7 +16,7 @@ var routes = require('./routes/index');
 var profiles = require('./routes/profiles');
 // var auth = require('./routes/auth')
 
-// var orders = require('./routes/orders');
+var orders = require('./routes/orders');
 // var products = require('./routes/products');
 // need to add authentication routes here?
 
@@ -72,9 +72,7 @@ app.use(passport.session());
 
 app.use('/', routes);
 app.use('/profiles', profiles);
-// app.use('/auth', auth);
-// app.use('/orders', orders);
-// need to add authentication routes here?
+app.use('/orders', orders);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

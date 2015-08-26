@@ -5,12 +5,6 @@ var models = require('../models/index');
 // Should require authentication
 //
 
-router.route('/')
-  .get(function(req, res, next) {
-    res.send('Here are the profiles');
-  })
-
-
 router.route('/:id')
   // "before action" - grab profile id
   .all(function(req, res, next) {
@@ -23,29 +17,42 @@ router.route('/:id')
   })
 
   .get(function(req, res){
-    models.Profile.findById(req.params.id).then(function(profile){
-      profile.getUser().then(function(user){
-        res.send({user: user, profile: profile});
-      });
+    // models.Profile.findById(req.params.id).then(function(profile){
+      res.locals.profile.getUser().then(function(user){
+        res.send({user: user, profile: res.locals.profile});
+      }), //;
 
-    }, function(err){
+    function(err){
       console.error(err);
-    });
+    };
   })
 
 
 // Update profile / user information
-  .patch(function(req, res) {
+  .patch(function(req, res, next) {
     res.locals.profile.update(req.body).then(function(profile){
-      // how
+      // how can I allow a user to edit both their user and profile information at the same time?
       res.send(profile);
     }, function(err){
       res.sendStatus(500);
     });
   })
 
+    // if (!req.user) {
+    //   var err = new Error("Log in first.");
+    //   return next(err);
+    // }
+
 
 // Delete profile / user information
+  .delete(function(req, res, next) {
+    res.locals.profile.destroy().then(function() {
+      // not deleting user information with profile information
+      res.send("Your account has been deleted.");
+    }), function(err){
+      console.error(err);
+    };
+  })
 
 
 module.exports = router;
