@@ -25,10 +25,8 @@ router.route('/:id')
 // can't get user and profile to render together
   .get(function(req, res){
     models.Profile.findById(req.params.id).then(function(profile){
-      // res.json(req.params.id);
       profile.getUser().then(function(user){
-        res.send(user);
-        // res.send(profile, user);
+        res.send({user: user, profile: profile});
       });
 
     }, function(err){
