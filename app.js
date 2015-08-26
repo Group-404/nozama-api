@@ -13,7 +13,7 @@ var passport = require('./lib/passport');
 
 var routes = require('./routes/index');
 // should this be profile singular?
-var profiles = require('./routes/profiles');
+// var profiles = require('./routes/profiles');
 // var auth = require('./routes/auth')
 
 var orders = require('./routes/orders');
@@ -71,7 +71,7 @@ app.use(passport.session());
 
 
 app.use('/', routes);
-app.use('/profiles', profiles);
+// app.use('/profile', profiles);
 app.use('/orders', orders);
 
 // catch 404 and forward to error handler

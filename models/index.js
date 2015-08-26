@@ -33,7 +33,7 @@ models.LineItem = sequelize.import('./lineitem');
 //  }
 // });
 
-models.User.hasOne(models.Profile);
+models.User.hasOne(models.Profile, {onDelete: "cascade", hooks: true});
 models.Profile.belongsTo(models.User);
 
 models.Order.belongsTo(models.User);

@@ -63,7 +63,6 @@ router.route('/signup').
           cb(null, user);
         }, cb);
       }
-      // create profile
       // should also log a user in here
     ], function(err, result) {
       if(err) {
@@ -74,37 +73,80 @@ router.route('/signup').
     });
   });
 
+
 // LOG IN
 router.route('/login').
   get(function(req, res, next) {
     res.sendStatus(405);
   }).
-//  post(function(req, res, next) {
-//   passport.authenticate('local', function(err, user, info) {
-//     if (err) { return next(err); }
-//     if (!user) { return res.redirect('/login'); }
-//     req.logIn(user, function(err) {
-//       if (err) { return next(err); }
-//       // return res.redirect('/users/' + user.username);
-//       return res.send(user);
-//     });
-//   })(req, res, next);
-// });
+
   post(passport.authenticate('local'), function(req, res){
-    res.json(req.user);
+    req.user.getProfile().then(function(profile){
+      res.locals.profile = profile;
+      res.json({user: req.user, profile: res.locals.profile});
+    }, function(err){
+      console.log(err);
+    })
   });
 
-router.route('/fail').
+
+// DISPLAY USER & PROFILE
+router.route('/displayAccount')
+  .get(function(req, res){
+    req.user.getProfile().then(function(profile){
+      res.send({user: req.user, profile: profile});
+    }, function(err){
+      next(err);
+    });
+  });
+
+
+// UPDATE USER & PROFILE
+router.route('/updateAccount')
+  .patch(function(req, res){
+    req.user.update(req.body).then(function(user){    // Update User
+      user.getProfile().then(function(profile){         // Get Profile
+        profile.update(req.body).then(function(){         // Update Profile
+          res.send({user: user, profile: profile});
+        }, function(err){
+          next(err);
+        });
+      }, function(err){
+        next(err);
+      })
+    });
+  });
+
+
+// DESTROY USER & PROFILE
+router.route('/deleteAccount')
+  .delete(function(req, res, next) {
+    req.user.destroy().then(function() {
+      res.send("Your account has been deleted.");
+    }), function(err){
+      console.error(err);
+    };
+  });
+
+
+// LOG OUT
+router.route('/logout').
   all(function(req, res, next) {
-    res.send('No such luck');
-  })
+    if (!req.user) {
+      var err = new Error("Log in first.");
+      return next(err);
+    }
+    req.logout();
+    res.sendStatus(200);
+  });
 
 
-// CHANGE PASSWORD (maybe this should go into profiles.js?
+// CHANGE PASSWORD
 router.route('/changePassword').
   get(function(req, res, next) {
     res.sendStatus(405);
   }).
+
   put(function(req, res, next) {
     console.log(req.body);
     console.log(req.user);
@@ -131,24 +173,11 @@ router.route('/changePassword').
       }
     ], function(err, result) {
       if(err) {
-        // students will make error handler
         return next(err);
       }
 
       res.sendStatus(201);
     });
-
-
-  });
-
-router.route('/logout').
-  all(function(req, res, next) {
-    if (!req.user) {
-      var err = new Error("Log in first.");
-      return next(err);
-    }
-    req.logout();
-    res.sendStatus(200);
   });
 
 
