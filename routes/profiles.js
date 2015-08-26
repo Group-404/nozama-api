@@ -22,7 +22,6 @@ router.route('/:id')
     })
   })
 
-// can't get user and profile to render together
   .get(function(req, res){
     models.Profile.findById(req.params.id).then(function(profile){
       profile.getUser().then(function(user){
@@ -36,7 +35,14 @@ router.route('/:id')
 
 
 // Update profile / user information
-
+  .patch(function(req, res) {
+    res.locals.profile.update(req.body).then(function(profile){
+      // how
+      res.send(profile);
+    }, function(err){
+      res.sendStatus(500);
+    });
+  })
 
 
 // Delete profile / user information
