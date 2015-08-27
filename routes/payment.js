@@ -27,8 +27,7 @@ router.route('/')
       },
       function(order, done){
         // set order's user id to current user's id
-        // IN PRODUCTION remove user id query
-        models.User.findById(1).then(function(user){
+        models.User.findById(req.user.id).then(function(user){
           order.setUser(user).then(function(order){
             done(null, order);
           }, function(err){
