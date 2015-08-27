@@ -78,9 +78,13 @@ router.route('/signup').
 router.route('/login').
   get(function(req, res, next) {
     res.sendStatus(405);
-  }).
-
-  post(passport.authenticate('local'), function(req, res){
+  })
+  .all(function(req,res, next){
+    console.log(req.body.email);
+    console.log(req.body.password);
+    next();
+  })
+  .post(passport.authenticate('local'), function(req, res){
     req.user.getProfile().then(function(profile){
       res.locals.profile = profile;
       res.json({user: req.user, profile: res.locals.profile});
@@ -132,10 +136,10 @@ router.route('/deleteAccount')
 // LOG OUT
 router.route('/logout').
   all(function(req, res, next) {
-    if (!req.user) {
-      var err = new Error("Log in first.");
-      return next(err);
-    }
+    // if (!req.user) {
+    //   var err = new Error("Log in first.");
+    //   return next(err);
+    // }
     req.logout();
     res.sendStatus(200);
   });
@@ -148,9 +152,9 @@ router.route('/changePassword').
   }).
 
   put(function(req, res, next) {
-    console.log(req.body);
-    console.log(req.user);
-    console.log(req.body.password);
+    // console.log(req.body);
+    // console.log(req.user);
+    // console.log(req.body.password);
     if(!req.body || !req.user || !req.body.password) {
       var err = new Error("No credentials.");
       return next(err);
