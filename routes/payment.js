@@ -6,8 +6,6 @@ var async = require('async');
 // See your keys here https://dashboard.stripe.com/account/apikeys
 var stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
-// Should require authentication?
-
 router.route('/')
  // Get method not allowed
   .get(function(req, res, next) {
@@ -80,32 +78,32 @@ router.route('/')
         amount += shipping;
         amount = Math.floor(amount * 100) // convert to cents, turn into integer
         done(null, amount);
+      },
+
+      // create payment using Stripe API
+      function(amount, done){
+        var stripeToken = request.body.stripeToken;
+        // var description = request.body.description;
+
+        stripe.charges.create({
+          amount: amount, // amount in cents, again
+          currency: "usd",
+          source: stripeToken
+          // description: description      //does it need this?
+        }, function(err, charge) {
+          if (err && err.type === 'StripeCardError') {
+            console.log("The card has been declined");
+          } else {
+            console.log("Payment successful");
+          }
+        }).then(function(charge){
+          done(null, charge);
+        }, function(err){
+          done(err);
+        });
       }
 
-      // add to waterfall: create payment
-      // function(amount, done){
-      //   var stripeToken = request.body.stripeToken;
-      //   // var description = request.body.description;
-
-      //   stripe.charges.create({
-      //     amount: amount, // amount in cents, again
-      //     currency: "usd",
-      //     source: stripeToken
-      //     // description: description      //does it need this?
-      //   }, function(err, charge) {
-      //     if (err && err.type === 'StripeCardError') {
-      //       console.log("The card has been declined");
-      //     } else {
-      //       console.log("Payment successful");
-      //     }
-      //   }).then(function(charge){
-      //     done(null, charge);
-      //   }, function(err){
-      //     done(err);
-      //   });
-      // }
-
-      ],function(err, result){ // error
+      ],function(err, result){ // callback at end of waterfall
         if (err) {
           return next(err);
         }
