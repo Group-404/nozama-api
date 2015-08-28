@@ -105,12 +105,23 @@ router.route('/displayAccount')
   });
 
 
+// sequilize.user.update({email: "blah"}) // postman
+// sequilize.user.update({user: { email: "blah"}}) // ajax
+
 // UPDATE USER & PROFILE
 router.route('/updateAccount')
   .patch(function(req, res){
-    req.user.update(req.body).then(function(user){    // Update User
+    req.user.update({email: req.body.user.email}).then(function(user){    // Update User
       user.getProfile().then(function(profile){         // Get Profile
-        profile.update(req.body).then(function(){         // Update Profile
+        profile.update({lastName: req.body.profile.lastName,
+                        firstName: req.body.profile.firstName,
+                        addressOne: req.body.profile.addressOne,
+                        addressTwo: req.body.profile.addressTwo,
+                        city: req.body.profile.city,
+                        state: req.body.profile.state,
+                        zipCode: req.body.profile.zipCode,
+                        phoneNumber: req.body.profile.phoneNumber
+        }).then(function(){         // Update Profile
           res.send({user: user, profile: profile});
         }, function(err){
           next(err);
