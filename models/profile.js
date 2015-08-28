@@ -56,7 +56,9 @@ module.exports = function(sequelize, Datatypes){
     },
 
     phoneNumber: {
-      type: Datatypes.STRING(10)
+      type: Datatypes.STRING(10),
+      allowNull: false,
+      unique: false
     }
 
     //Shipping only in USA

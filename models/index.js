@@ -2,10 +2,14 @@
 
 var Sequelize = require('sequelize');
 
-var sequelize = new Sequelize('nozama_app', 'group404', 'abc', {
-  host: "localhost",
-  port: 5432,
-  dialect: 'postgres'
+var sequelize = new Sequelize(process.env.SQL_DB,
+  process.env.SQL_USER,
+  process.env.SQL_PASS,
+
+  {
+    host: process.env.SQL_HOST,
+    port: process.env.SQL_PORT,
+    dialect: 'postgres'
 });
 
 var mongoose = require('mongoose');
@@ -29,7 +33,7 @@ models.LineItem = sequelize.import('./lineitem');
 //  }
 // });
 
-models.User.hasOne(models.Profile);
+models.User.hasOne(models.Profile, {onDelete: "cascade", hooks: true});
 models.Profile.belongsTo(models.User);
 
 models.Order.belongsTo(models.User);

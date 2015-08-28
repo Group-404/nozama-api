@@ -1,0 +1,2 @@
+DROP DATABASE IF EXISTS nozama_app;
+CREATE DATABASE nozama_app;
