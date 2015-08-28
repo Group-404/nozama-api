@@ -14,6 +14,7 @@ var passport = require('./lib/passport');
 var routes = require('./routes/index');
 var orders = require('./routes/orders');
 var products = require('./routes/products');
+var payment = require('./routes/payment');
 
 var app = express();
 
@@ -74,6 +75,7 @@ app.use('/', routes);
 // app.use('/orders', orders);
 app.use('/products', products);
 app.use('/orders', orders);
+app.use('/payment', payment);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
